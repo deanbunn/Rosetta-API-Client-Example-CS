@@ -1,4 +1,5 @@
-﻿using DotNetEnv;
+﻿using System.Text.Json;
+using DotNetEnv;
 using RosettaAPIApp;
 
 //Load Environment Variables File
@@ -12,6 +13,7 @@ ucdAPIInfo.Client_ID = Environment.GetEnvironmentVariable("ROSETTA_CLIENT_ID");
 ucdAPIInfo.Client_Secret = Environment.GetEnvironmentVariable("ROSETTA_CLIENT_SECRET");
 ucdAPIInfo.Base_Url = Environment.GetEnvironmentVariable("ROSETTA_BASE_URL");
 ucdAPIInfo.Token_Url = Environment.GetEnvironmentVariable("ROSETTA_OAUTH_URL");
+ucdAPIInfo.OAuth_Scopes = Environment.GetEnvironmentVariable("ROSETTA_SCOPES");
 ucdAPIInfo.Test_ID = Environment.GetEnvironmentVariable("ROSETTA_TEST_ID");   
 
 //Check for Required Client ID and Secret Before Making API Calls
@@ -33,7 +35,34 @@ if(string.IsNullOrEmpty(ucdAPIInfo.Client_ID) == false && string.IsNullOrEmpty(u
 
         Console.WriteLine("Status: " + response.StatusCode);
         Console.WriteLine(responsebody);
+        Console.WriteLine(" ");
+        Console.WriteLine(" ");
 
+        var jnOAuthPayload = JsonDocument.Parse(responsebody);
+
+        var jnOAuthRoot = jnOAuthPayload.RootElement;
+
+        if(jnOAuthRoot.TryGetProperty("access_token", out JsonElement accessTokenElement) && 
+           jnOAuthRoot.TryGetProperty("expires_in", out JsonElement expiresInElement))
+        {
+
+            //Load OAuth Token
+            ucdAPIInfo.OAuth_Token = accessTokenElement.GetString();
+
+            //Determine When It Expires
+            if(expiresInElement.TryGetDouble(out double dblExpiresIn))
+            {
+
+                DateTime dtExpiresIn = DateTime.Now.AddSeconds(dblExpiresIn);
+
+                Console.WriteLine(DateTime.Now.ToString());
+                Console.WriteLine(dtExpiresIn.ToString());
+                Console.WriteLine(dtExpiresIn.Ticks.ToString());
+            }
+
+
+        }//End of Access_Token and Expires_In Checks
+        
     }
 
 
