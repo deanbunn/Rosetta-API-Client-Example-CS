@@ -10,19 +10,18 @@ RosettaAPIWorker rosettaAPIWrkr = new();
 for(int i = 0; i < 25;i++)
 {
 
-    //Pull OAuth Token
-    if(rosettaAPIWrkr.GetAPIToken())
-    {
-        //Display Expires 
-        Console.WriteLine(rosettaAPIWrkr.Expires_in_Ticks.ToString());
-    }
-    else
-    {
-        Console.WriteLine("No bueno");
-    }
+    RosettaPerson rpTester = rosettaAPIWrkr.GetPersonByLoginID("dbunn");
 
+    Console.WriteLine(rpTester.DisplayName);
+
+    //Display Expires 
+    Console.WriteLine(rosettaAPIWrkr.Expires_in_Ticks.ToString());
+    
     //Wait for One Minute
     //await Task.Delay(TimeSpan.FromMinutes(1));
+
+    //Wait for 10 Seconds
+    await Task.Delay(TimeSpan.FromSeconds(10));    
 
 }
 

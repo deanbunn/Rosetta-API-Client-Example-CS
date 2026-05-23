@@ -32,7 +32,7 @@ public class RosettaAPIWorker
 
     }
 
-    public bool GetAPIToken()
+    public bool CheckOAuthToken()
     {
         //Var for Return Value
         bool bTokenStatus = true;
@@ -103,6 +103,71 @@ public class RosettaAPIWorker
 
         return bTokenStatus;
 
+    }
+
+    public RosettaPerson GetPersonByLoginID(string loginID)
+    {
+        //Initialize Person to Return
+        RosettaPerson rosettaPerson = new();
+
+        //Check OAuth Token
+        if(CheckOAuthToken() == true)
+        {
+            //Initiate Http Client to Get People Information
+            using(var client = new HttpClient())
+            {
+                //Var for Bearer Token
+                string bearerToken = "Bearer " + _OAuth_Token;
+
+                //Add Required Header Values
+                client.DefaultRequestHeaders.Add("Authorization",bearerToken);
+
+                //Var for People Url
+                string peopleURL = Base_Url + "people?loginid=" + loginID;
+
+                //Get to People Endpoint
+                HttpResponseMessage response = client.GetAsync(peopleURL).Result;
+
+                //Check Response Status Code
+                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+
+                    //Read Response Body
+                    string responsebody = response.Content.ReadAsStringAsync().Result;
+
+                    //Parse the Response Body
+                    using(JsonDocument jdPeople = JsonDocument.Parse(responsebody))
+                    {
+
+                        //Access the Array at the Root
+                        JsonElement root = jdPeople.RootElement;
+
+                        //Iterate Through the Array
+                        foreach(JsonElement element in root.EnumerateArray())
+                        {
+                            //Pull Display Name
+                            if(element.TryGetProperty("displayname",out JsonElement displayNameElement))
+                            {
+                                rosettaPerson.DisplayName = displayNameElement.GetString();
+                            }
+
+                            //Many More Coming
+                            //
+                            //
+                            //
+
+                        }//End of Root Enumerate Array
+
+                    }//End Parse Response Body
+
+                }//End of Status Code Check
+
+            }//End of HttpClient
+
+        }//End of CheckOAuthToken
+
+        //Return Person
+        return rosettaPerson;
     }
 
 }
