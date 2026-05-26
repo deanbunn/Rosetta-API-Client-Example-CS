@@ -6,21 +6,26 @@ using UCDRosettaAPI;
 RosettaAPIWorker rosettaAPIWrkr = new();
 
 //Testing Loop 
-for(int i = 0; i < 25;i++)
+for(int i = 0; i < 1;i++)
 {
 
-    RosettaPerson rpTester = rosettaAPIWrkr.GetPersonBySearchTerm(RosettaAPIWorker.SearchBy.loginid,"dbunn");
+    //Query People by Login ID
+    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.SearchBy.department,"024070");
 
-    Console.WriteLine(rpTester.DisplayName);
-
+    foreach(RosettaPerson rosettaPrsn in lRosettaPeople)
+    {
+        //Show Display Name of Person
+        Console.WriteLine(rosettaPrsn.DisplayName);
+    }
+    
     //Display Expires 
-    Console.WriteLine(rosettaAPIWrkr.Expires_in_Ticks.ToString());
+    Console.WriteLine("Expires in ticks: " + rosettaAPIWrkr.Expires_in_Ticks.ToString());
     
     //Wait for One Minute
     //await Task.Delay(TimeSpan.FromMinutes(1));
 
-    //Wait for 10 Seconds
-    await Task.Delay(TimeSpan.FromSeconds(10));    
+    //Wait for 4 Seconds
+    //await Task.Delay(TimeSpan.FromSeconds(4));    
 
 }
 

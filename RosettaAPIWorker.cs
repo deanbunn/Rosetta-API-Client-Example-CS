@@ -36,7 +36,11 @@ public class RosettaAPIWorker
     {
         iamid,
         loginid,
-        email
+        email,
+        employeeid,
+        studentid,
+        mailid,
+        department
     }
 
     public bool CheckOAuthToken()
@@ -112,10 +116,10 @@ public class RosettaAPIWorker
 
     }
 
-    public RosettaPerson GetPersonBySearchTerm(SearchBy searchBy, string searchTerm)
+    public List<RosettaPerson> GetPeopleBySearchTerm(SearchBy searchBy, string searchTerm)
     {
-        //Initialize Person to Return
-        RosettaPerson rosettaPerson = new();
+        //Var for Return List
+        List<RosettaPerson> lRosettaPeople = new();
 
         //Check OAuth Token
         if(CheckOAuthToken() == true)
@@ -130,7 +134,7 @@ public class RosettaAPIWorker
                 client.DefaultRequestHeaders.Add("Authorization",bearerToken);
 
                 //Var for People Url
-                string peopleURL = Base_Url + "people?"+ searchBy.ToString() + "=" + searchTerm;
+                string peopleURL = Base_Url + "people?"+ searchBy.ToString() + "=" + searchTerm + "&limit=10000&count=true";
 
                 //Get to People Endpoint
                 HttpResponseMessage response = client.GetAsync(peopleURL).Result;
@@ -138,6 +142,12 @@ public class RosettaAPIWorker
                 //Check Response Status Code
                 if(response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    
+                    //Pull X-Total-Count and x-response-count
+                    if(response.Headers.TryGetValues("x-total-count", out var xtcount) && response.Headers.TryGetValues("x-response-count", out var xrpcount))
+                    {
+                        Console.WriteLine(xtcount.First() + " " + xrpcount.First());
+                    }
 
                     //Read Response Body
                     string responsebody = response.Content.ReadAsStringAsync().Result;
@@ -152,6 +162,9 @@ public class RosettaAPIWorker
                         //Iterate Through the Array
                         foreach(JsonElement element in root.EnumerateArray())
                         {
+                            //Initialize Person to Return
+                            RosettaPerson rosettaPerson = new();
+
                             //Pull Display Name
                             if(element.TryGetProperty("displayname",out JsonElement displayNameElement))
                             {
@@ -162,6 +175,9 @@ public class RosettaAPIWorker
                             //
                             //
                             //
+
+                            //Add Rosetta Person to Returned People List
+                            lRosettaPeople.Add(rosettaPerson);
 
                         }//End of Root Enumerate Array
 
@@ -174,7 +190,7 @@ public class RosettaAPIWorker
         }//End of CheckOAuthToken
 
         //Return Person
-        return rosettaPerson;
+        return lRosettaPeople;
     }
 
 }
