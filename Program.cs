@@ -5,12 +5,11 @@ using UCDRosettaAPI;
 //Initiate Rosetta API Worker
 RosettaAPIWorker rosettaAPIWrkr = new();
 
-
 //Testing Loop 
 for(int i = 0; i < 25;i++)
 {
 
-    RosettaPerson rpTester = rosettaAPIWrkr.GetPersonByLoginID("dbunn");
+    RosettaPerson rpTester = rosettaAPIWrkr.GetPersonBySearchTerm(RosettaAPIWorker.SearchBy.loginid,"dbunn");
 
     Console.WriteLine(rpTester.DisplayName);
 

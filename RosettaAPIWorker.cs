@@ -32,6 +32,13 @@ public class RosettaAPIWorker
 
     }
 
+    public enum SearchBy
+    {
+        iamid,
+        loginid,
+        email
+    }
+
     public bool CheckOAuthToken()
     {
         //Var for Return Value
@@ -105,7 +112,7 @@ public class RosettaAPIWorker
 
     }
 
-    public RosettaPerson GetPersonByLoginID(string loginID)
+    public RosettaPerson GetPersonBySearchTerm(SearchBy searchBy, string searchTerm)
     {
         //Initialize Person to Return
         RosettaPerson rosettaPerson = new();
@@ -123,7 +130,7 @@ public class RosettaAPIWorker
                 client.DefaultRequestHeaders.Add("Authorization",bearerToken);
 
                 //Var for People Url
-                string peopleURL = Base_Url + "people?loginid=" + loginID;
+                string peopleURL = Base_Url + "people?"+ searchBy.ToString() + "=" + searchTerm;
 
                 //Get to People Endpoint
                 HttpResponseMessage response = client.GetAsync(peopleURL).Result;
