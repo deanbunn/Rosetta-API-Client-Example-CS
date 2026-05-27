@@ -121,73 +121,120 @@ public class RosettaAPIWorker
         //Var for Return List
         List<RosettaPerson> lRosettaPeople = new();
 
-        //Check OAuth Token
-        if(CheckOAuthToken() == true)
+        //Var for Search Result Limit
+        int nSrchRsltLimit = 100;
+
+        //Var for Search Result Offset
+        int nSrchRsltOffset = 0;
+
+        //Var for Retrieve More Search Results
+        bool bRetrMoreSrchRslts = true;
+
+        do
         {
-            //Initiate Http Client to Get People Information
-            using(var client = new HttpClient())
+            //Check OAuth Token
+            if(CheckOAuthToken() == true)
             {
-                //Var for Bearer Token
-                string bearerToken = "Bearer " + _OAuth_Token;
-
-                //Add Required Header Values
-                client.DefaultRequestHeaders.Add("Authorization",bearerToken);
-
-                //Var for People Url
-                string peopleURL = Base_Url + "people?"+ searchBy.ToString() + "=" + searchTerm + "&limit=10000&count=true";
-
-                //Get to People Endpoint
-                HttpResponseMessage response = client.GetAsync(peopleURL).Result;
-
-                //Check Response Status Code
-                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                //Initiate Http Client to Get People Information
+                using(var client = new HttpClient())
                 {
-                    
-                    //Pull X-Total-Count and x-response-count
-                    if(response.Headers.TryGetValues("x-total-count", out var xtcount) && response.Headers.TryGetValues("x-response-count", out var xrpcount))
+                    //Var for Bearer Token
+                    string bearerToken = "Bearer " + _OAuth_Token;
+
+                    //Add Required Header Values
+                    client.DefaultRequestHeaders.Add("Authorization",bearerToken);
+
+                    //Var for People Url
+                    string peopleURL = Base_Url + "people?"+ searchBy.ToString() + "=" + searchTerm + "&offset=" + nSrchRsltOffset.ToString() + "&limit=" + nSrchRsltLimit.ToString() + "&count=true";
+
+                    //Get to People Endpoint
+                    HttpResponseMessage response = client.GetAsync(peopleURL).Result;
+
+                    //Check Response Status Code
+                    if(response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        Console.WriteLine(xtcount.First() + " " + xrpcount.First());
-                    }
-
-                    //Read Response Body
-                    string responsebody = response.Content.ReadAsStringAsync().Result;
-
-                    //Parse the Response Body
-                    using(JsonDocument jdPeople = JsonDocument.Parse(responsebody))
-                    {
-
-                        //Access the Array at the Root
-                        JsonElement root = jdPeople.RootElement;
-
-                        //Iterate Through the Array
-                        foreach(JsonElement element in root.EnumerateArray())
+                        
+                        //Pull X-Total-Count and x-response-count
+                        if(response.Headers.TryGetValues("x-total-count", out var xtcount) 
+                        && response.Headers.TryGetValues("x-response-count", out var xrpcount)
+                        && int.TryParse(xtcount.First(),out int nTotalCnt) 
+                        && int.TryParse(xrpcount.First(),out int nRspnCnt))
                         {
-                            //Initialize Person to Return
-                            RosettaPerson rosettaPerson = new();
 
-                            //Pull Display Name
-                            if(element.TryGetProperty("displayname",out JsonElement displayNameElement))
+                            //Check Total and Response Counts are Not Empty
+                            if(nTotalCnt > 0 && nRspnCnt > 0)
                             {
-                                rosettaPerson.DisplayName = displayNameElement.GetString();
+                                //Read Response Body
+                                string responsebody = response.Content.ReadAsStringAsync().Result;
+
+                                //Parse the Response Body
+                                using(JsonDocument jdPeople = JsonDocument.Parse(responsebody))
+                                {
+
+                                    //Access the Array at the Root
+                                    JsonElement root = jdPeople.RootElement;
+
+                                    //Iterate Through the Array
+                                    foreach(JsonElement element in root.EnumerateArray())
+                                    {
+                                        //Initialize Person to Return
+                                        RosettaPerson rosettaPerson = new();
+
+                                        //Pull Display Name
+                                        if(element.TryGetProperty("displayname",out JsonElement displayNameElement))
+                                        {
+                                            rosettaPerson.DisplayName = displayNameElement.GetString();
+                                        }
+
+                                        //Many More Coming
+                                        //
+                                        //
+                                        //
+
+                                        //Add Rosetta Person to Returned People List
+                                        lRosettaPeople.Add(rosettaPerson);
+
+                                    }//End of Root Enumerate Array
+
+                                }//End Parse Response Body
+
+                                //Increment Offset
+                                nSrchRsltOffset += nSrchRsltLimit;
+
+                                //Check Offset to Total Count
+                                if(nSrchRsltOffset >= nTotalCnt)
+                                {
+                                    bRetrMoreSrchRslts = false;
+                                }
+
                             }
+                            else
+                            {
+                                bRetrMoreSrchRslts = false;
+                            }//End of nTotalCnt and nRspnCnt Empty Checks
 
-                            //Many More Coming
-                            //
-                            //
-                            //
+                        }
+                        else
+                        {
+                            bRetrMoreSrchRslts = false;
+                        }//End of Return Header Counts Checks
 
-                            //Add Rosetta Person to Returned People List
-                            lRosettaPeople.Add(rosettaPerson);
+                    }
+                    else
+                    {
+                        bRetrMoreSrchRslts = false;
+                    }//End of Status Code Check
 
-                        }//End of Root Enumerate Array
+                }//End of HttpClient
 
-                    }//End Parse Response Body
+            }
+            else
+            {
+                bRetrMoreSrchRslts = false;
+            }//End of CheckOAuthToken
 
-                }//End of Status Code Check
-
-            }//End of HttpClient
-
-        }//End of CheckOAuthToken
+        }
+        while(bRetrMoreSrchRslts == true);
 
         //Return Person
         return lRosettaPeople;

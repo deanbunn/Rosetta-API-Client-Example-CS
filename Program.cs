@@ -17,13 +17,13 @@ for(int i = 0; i < 1;i++)
         //Show Display Name of Person
         Console.WriteLine(rosettaPrsn.DisplayName);
     }
+
+    //Display List Count
+    Console.WriteLine(lRosettaPeople.Count.ToString());
     
     //Display Expires 
     Console.WriteLine("Expires in ticks: " + rosettaAPIWrkr.Expires_in_Ticks.ToString());
     
-    //Wait for One Minute
-    //await Task.Delay(TimeSpan.FromMinutes(1));
-
     //Wait for 4 Seconds
     //await Task.Delay(TimeSpan.FromSeconds(4));    
 
