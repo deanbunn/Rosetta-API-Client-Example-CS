@@ -116,6 +116,28 @@ public class RosettaAPIWorker
 
     }
 
+    public RosettaPerson ParseRosettaPersonJson(JsonElement jePeople)
+    {
+        //Initialize Person to Return
+        RosettaPerson rosettaPerson = new();
+
+        //Retrieve Display Name
+        if(jePeople.TryGetProperty("displayname",out JsonElement displayNameElement))
+        {
+            rosettaPerson.DisplayName = displayNameElement.GetString();
+        }
+
+        //Retrieve IAM ID
+        if(jePeople.TryGetProperty("iam_id",out JsonElement iamIDElement))
+        {
+            rosettaPerson.IAM_ID = iamIDElement.GetString();
+        }
+        
+
+
+        return rosettaPerson;
+    }
+
     public List<RosettaPerson> GetPeopleBySearchTerm(SearchBy searchBy, string searchTerm)
     {
         //Var for Return List
@@ -177,22 +199,9 @@ public class RosettaAPIWorker
                                     //Iterate Through the Array
                                     foreach(JsonElement element in root.EnumerateArray())
                                     {
-                                        //Initialize Person to Return
-                                        RosettaPerson rosettaPerson = new();
-
-                                        //Pull Display Name
-                                        if(element.TryGetProperty("displayname",out JsonElement displayNameElement))
-                                        {
-                                            rosettaPerson.DisplayName = displayNameElement.GetString();
-                                        }
-
-                                        //Many More Coming
-                                        //
-                                        //
-                                        //
 
                                         //Add Rosetta Person to Returned People List
-                                        lRosettaPeople.Add(rosettaPerson);
+                                        lRosettaPeople.Add(ParseRosettaPersonJson(element));
 
                                     }//End of Root Enumerate Array
 

@@ -14,18 +14,23 @@ for(int i = 0; i < 1;i++)
 
     foreach(RosettaPerson rosettaPrsn in lRosettaPeople)
     {
+        Console.WriteLine(" ");
+
         //Show Display Name of Person
         Console.WriteLine(rosettaPrsn.DisplayName);
+        Console.WriteLine(rosettaPrsn.IAM_ID);
+
+        Console.WriteLine(" ");
     }
 
-    //Display List Count
-    Console.WriteLine(lRosettaPeople.Count.ToString());
+    // //Display List Count
+    // Console.WriteLine(lRosettaPeople.Count.ToString());
     
-    //Display Expires 
-    Console.WriteLine("Expires in ticks: " + rosettaAPIWrkr.Expires_in_Ticks.ToString());
+    // //Display Expires 
+    // Console.WriteLine("Expires in ticks: " + rosettaAPIWrkr.Expires_in_Ticks.ToString());
     
-    //Wait for 4 Seconds
-    //await Task.Delay(TimeSpan.FromSeconds(4));    
+    // //Wait for 4 Seconds
+    // await Task.Delay(TimeSpan.FromSeconds(4));    
 
 }
 
