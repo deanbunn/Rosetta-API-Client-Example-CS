@@ -19,7 +19,10 @@ for(int i = 0; i < 1;i++)
         //Show Display Name of Person
         Console.WriteLine(rosettaPrsn.DisplayName);
         Console.WriteLine(rosettaPrsn.IAM_ID);
-
+        Console.WriteLine(rosettaPrsn.Provisioning_Status_Primary);
+        Console.WriteLine(rosettaPrsn.Provisioning_Status_Employee);
+        Console.WriteLine(rosettaPrsn.Affiliation_Employee.ToString());
+        
         Console.WriteLine(" ");
     }
 

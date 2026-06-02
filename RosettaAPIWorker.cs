@@ -122,18 +122,54 @@ public class RosettaAPIWorker
         RosettaPerson rosettaPerson = new();
 
         //Retrieve Display Name
-        if(jePeople.TryGetProperty("displayname",out JsonElement displayNameElement))
+        if(jePeople.TryGetProperty("displayname",out JsonElement jeDisplayName))
         {
-            rosettaPerson.DisplayName = displayNameElement.GetString();
+            rosettaPerson.DisplayName = jeDisplayName.GetString();
         }
 
         //Retrieve IAM ID
-        if(jePeople.TryGetProperty("iam_id",out JsonElement iamIDElement))
+        if(jePeople.TryGetProperty("iam_id",out JsonElement jeIAMID))
         {
-            rosettaPerson.IAM_ID = iamIDElement.GetString();
+            rosettaPerson.IAM_ID = jeIAMID.GetString();
         }
         
+        //Retrieve Provisioning Statuses
+        if(jePeople.TryGetProperty("provisioning_status",out JsonElement jeProvisioningStatus))
+        {
 
+            //Retrieve Primary Provisioning Status
+            if(jeProvisioningStatus.TryGetProperty("primary",out JsonElement jeProvisioningStatusPrimary))
+            {
+                rosettaPerson.Provisioning_Status_Primary = jeProvisioningStatusPrimary.GetString() ?? "";
+            }
+            
+            //Retrieve Employee Provisioning Status
+            if(jeProvisioningStatus.TryGetProperty("employee",out JsonElement jeProvisioningStatusEmployee))
+            {
+                rosettaPerson.Provisioning_Status_Employee = jeProvisioningStatusEmployee.GetString() ?? "";
+            }
+            
+        }//End of Provisioning Status
+
+        //Retrieve Affiliation 
+        if(jePeople.TryGetProperty("affiliation",out JsonElement jeAffiliation))
+        {
+            //Loop Through Each Affiliation
+            foreach(JsonElement jeAffil in jeAffiliation.EnumerateArray())
+            {
+                //Check For Employee Status
+                if(jeAffil.GetString() == "employee")
+                {
+                    rosettaPerson.Affiliation_Employee = true;
+                }
+
+                //Many More to Come
+                //
+                //
+
+            }//End of Affiliation Enumerate Array
+
+        }//End of Affiliations 
 
         return rosettaPerson;
     }
