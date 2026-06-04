@@ -118,19 +118,102 @@ public class RosettaAPIWorker
 
     public RosettaPerson ParseRosettaPersonJson(JsonElement jePeople)
     {
+
         //Initialize Person to Return
         RosettaPerson rosettaPerson = new();
 
         //Retrieve Display Name
         if(jePeople.TryGetProperty("displayname",out JsonElement jeDisplayName))
         {
-            rosettaPerson.DisplayName = jeDisplayName.GetString();
+            rosettaPerson.DisplayName = jeDisplayName.GetString() ?? "";
         }
 
         //Retrieve IAM ID
         if(jePeople.TryGetProperty("iam_id",out JsonElement jeIAMID))
         {
-            rosettaPerson.IAM_ID = jeIAMID.GetString();
+            rosettaPerson.IAM_ID = jeIAMID.GetString() ?? "";
+        }
+
+        //Retrieve IDs
+        if(jePeople.TryGetProperty("id",out JsonElement jeIDs))
+        {
+
+            //Retrieve IAM ID
+            if(jeIDs.TryGetProperty("iam_id",out JsonElement jeIDsIAM))
+            {
+                rosettaPerson.IAM_ID = jeIDsIAM.GetString() ?? "";
+            }
+            
+            //Retrieve Login ID
+            if(jeIDs.TryGetProperty("login_id",out JsonElement jeIDsLogin))
+            {
+                rosettaPerson.Login_ID = jeIDsLogin.GetString() ?? "";
+            }
+
+            //Retrieve Mothra ID
+            if(jeIDs.TryGetProperty("mothra_id",out JsonElement jeIDsMothra))
+            {
+                rosettaPerson.Mothra_ID = jeIDsMothra.GetString() ?? "";
+            }
+
+            //Retrieve Employee ID
+            if(jeIDs.TryGetProperty("employee_id",out JsonElement jeIDsEmployee))
+            {
+                rosettaPerson.Employee_ID = jeIDsEmployee.GetString() ?? "";
+            }
+
+            //Retrieve Mail IDs
+            if(jeIDs.TryGetProperty("mail_id",out JsonElement jeIDsMail))
+            {
+                //Check for Campus Mail ID
+                if(jeIDsMail.TryGetProperty("campus",out JsonElement jeIDsMailCampus))
+                {
+                    rosettaPerson.Mail_ID_Campus = jeIDsMailCampus.GetString() ?? "";
+                }
+
+                //Check for Health Mail ID
+                if(jeIDsMail.TryGetProperty("health",out JsonElement jeIDsMailHealth))
+                {
+                    rosettaPerson.Mail_ID_Health = jeIDsMailHealth.GetString() ?? "";
+                }
+
+            }
+            
+        }//End of IDs 
+
+        //Retrieve Names
+        if(jePeople.TryGetProperty("name",out JsonElement jeNames))
+        {
+            //Check for Lived First Name
+            if(jeNames.TryGetProperty("lived_first_name",out JsonElement jeNamesLivedFirst))
+            {
+                rosettaPerson.Lived_First_Name = jeNamesLivedFirst.GetString() ?? "";
+            }
+
+            //Check for Lived Last Name
+            if(jeNames.TryGetProperty("lived_last_name",out JsonElement jeNamesLivedLast))
+            {
+                rosettaPerson.Lived_Last_Name = jeNamesLivedLast.GetString() ?? "";
+            }
+
+        }//End of Names Checks
+
+        //Retrieve Email Addresses
+        if(jePeople.TryGetProperty("email",out JsonElement jeEmailAddress))
+        {
+
+            //Check for Campus Email Address
+            if(jeEmailAddress.TryGetProperty("campus",out JsonElement jeEmailAddressCampus))
+            {
+                rosettaPerson.Email_Address_Campus = jeEmailAddressCampus.GetString() ?? "";
+            }
+
+            //Check for Health Email Address
+            if(jeEmailAddress.TryGetProperty("health",out JsonElement jeEmailAddressHealth))
+            {
+                rosettaPerson.Email_Address_Health = jeEmailAddressHealth.GetString() ?? "";
+            }
+
         }
         
         //Retrieve Provisioning Statuses

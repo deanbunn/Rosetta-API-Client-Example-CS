@@ -1,15 +1,20 @@
 
+using System.ComponentModel;
+
 namespace UCDRosettaAPI;
 
 public class RosettaPerson
 {
-    public string? IAM_ID {get;set;}
-    public string? Login_ID {get;set;}
-    public string? Mothra_ID {get;set;}
-    public string? Employee_ID {get;set;}
-    public string? Mail_ID {get;set;}
-    public string? Email_Primary {get;set;}
-    public string? Email_Work {get;set;}
+    public string IAM_ID {get;set;}
+    public string Login_ID {get;set;}
+    public string Mothra_ID {get;set;}
+    public string Employee_ID {get;set;}
+    public string Mail_ID_Campus {get;set;}
+    public string Mail_ID_Health {get;set;}
+    public string Email_Address_Campus {get;set;}
+    public string Email_Address_Health {get;set;}
+    public string Lived_First_Name {get;set;}
+    public string Lived_Last_Name {get;set;}
     public string? DisplayName {get;set;}
     public string ProvisioningStatus_Primary {get;set;}
     public string ProvisioningStatus_Employee {get;set;}
@@ -37,7 +42,16 @@ public class RosettaPerson
     
     public RosettaPerson()
     {
-        
+        IAM_ID = string.Empty;
+        Login_ID = string.Empty;
+        Mothra_ID = string.Empty;
+        Employee_ID = string.Empty;
+        Mail_ID_Campus = string.Empty;
+        Mail_ID_Health = string.Empty;
+        Email_Address_Campus = string.Empty;
+        Email_Address_Health = string.Empty;
+        Lived_First_Name = string.Empty;
+        Lived_Last_Name = string.Empty;
         ProvisioningStatus_Employee = string.Empty;
         ProvisioningStatus_Faculty = string.Empty;
         ProvisioningStatus_Primary = string.Empty;
