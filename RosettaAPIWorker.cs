@@ -148,6 +148,18 @@ public class RosettaAPIWorker
             {
                 rosettaPerson.ProvisioningStatus_Employee = jeProvisioningStatusEmployee.GetString() ?? "";
             }
+
+            //Retrieve Faculty Provisioning Status
+            if(jeProvisioningStatus.TryGetProperty("faculty",out JsonElement jeProvisioningStatusFaculty))
+            {
+                rosettaPerson.ProvisioningStatus_Faculty = jeProvisioningStatusFaculty.GetString() ?? "";
+            }
+
+            //Retrieve Student Provisioning Status
+            if(jeProvisioningStatus.TryGetProperty("student",out JsonElement jeProvisioningStatusStudent))
+            {
+                rosettaPerson.ProvisioningStatus_Student = jeProvisioningStatusStudent.GetString() ?? "";
+            }
             
         }//End of Provisioning Status
 
@@ -157,19 +169,103 @@ public class RosettaAPIWorker
             //Loop Through Each Affiliation
             foreach(JsonElement jeAffil in jeAffiliation.EnumerateArray())
             {
-                //Check For Employee Status
-                if(jeAffil.GetString() == "employee")
-                {
-                    rosettaPerson.Affiliation_Employee = true;
-                }
 
-                //Many More to Come
-                //
-                //
+                switch(jeAffil.GetString())
+                {
+
+                    case "employee":
+                        rosettaPerson.Affiliation_Employee = true;
+                        break;
+                    
+                    case "faculty":
+                        rosettaPerson.Affiliation_Faculty = true;
+                        break;
+                    
+                    case "temporary_affiliate":
+                        rosettaPerson.Affiliation_Temporary_Affiliate = true;
+                        break;
+
+                    case "student":
+                        rosettaPerson.Affiliation_Student = true;
+                        break;
+
+                    case "student_applicant":
+                        rosettaPerson.Affiliation_Student_Applicant = true;
+                        break;
+
+                    case "health_affiliate":
+                        rosettaPerson.Affiliation_Health_Affiliate = true;
+                        break;
+
+                }//End of jeAffil Switch Statement
 
             }//End of Affiliation Enumerate Array
 
         }//End of Affiliations 
+
+        //Retrieve Employment Status 
+        if(jePeople.TryGetProperty("employment_status",out JsonElement jeEmploymentStatus))
+        {
+            //Loop Through Each Employment Status
+            foreach(JsonElement jeEmplStatus in jeEmploymentStatus.EnumerateArray())
+            {
+
+                switch(jeEmplStatus.GetString())
+                {
+
+                    case "is_academic":
+                        rosettaPerson.Employment_Is_Academic = true;
+                        break;
+                    
+                    case "is_academic_senate":
+                        rosettaPerson.Employment_Is_Academic_Senate = true;
+                        break;
+                    
+                    case "is_academic_federation":
+                        rosettaPerson.Employment_Is_Academic_Federation = true;
+                        break;
+
+                    case "is_faculty":
+                        rosettaPerson.Employment_Is_Faculty = true;
+                        break;
+
+                    case "is_teaching_faculty":
+                        rosettaPerson.Employment_Is_Teaching_Faculty = true;
+                        break;
+
+                    case "is_ladder_rank":
+                        rosettaPerson.Employment_Is_Ladder_Rank = true;
+                        break;
+
+                    case "is_without_salary":
+                        rosettaPerson.Employment_Is_Without_Salary = true;
+                        break;
+
+                    case "is_msp":
+                        rosettaPerson.Employment_Is_MSP = true;
+                        break;
+
+                    case "is_ssp":
+                        rosettaPerson.Employment_Is_SSP = true;
+                        break;
+
+                    case "is_manager":
+                        rosettaPerson.Employment_Is_Manager = true;
+                        break;
+
+                    case "is_campus_employee":
+                        rosettaPerson.Employment_Is_Campus_Employee = true;
+                        break;
+
+                    case "is_health_employee":
+                        rosettaPerson.Employment_Is_Health_Employee = true;
+                        break;
+
+                }//End of jeEmplStatus Switch Statement
+
+            }//End of Employment Status Enumerate Array
+
+        }//End of Employment Statuses
 
         return rosettaPerson;
     }

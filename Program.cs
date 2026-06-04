@@ -11,7 +11,7 @@ for(int i = 0; i < 1;i++)
 {
 
     //Query People by Login ID
-    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.SearchBy.loginid,"dbunn");
+    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.SearchBy.loginid,"lmarcu");
 
     //Loop Through Returned Rosetta People Listing
     foreach(RosettaPerson rosettaPrsn in lRosettaPeople)
