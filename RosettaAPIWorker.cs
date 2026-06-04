@@ -140,13 +140,13 @@ public class RosettaAPIWorker
             //Retrieve Primary Provisioning Status
             if(jeProvisioningStatus.TryGetProperty("primary",out JsonElement jeProvisioningStatusPrimary))
             {
-                rosettaPerson.Provisioning_Status_Primary = jeProvisioningStatusPrimary.GetString() ?? "";
+                rosettaPerson.ProvisioningStatus_Primary = jeProvisioningStatusPrimary.GetString() ?? "";
             }
             
             //Retrieve Employee Provisioning Status
             if(jeProvisioningStatus.TryGetProperty("employee",out JsonElement jeProvisioningStatusEmployee))
             {
-                rosettaPerson.Provisioning_Status_Employee = jeProvisioningStatusEmployee.GetString() ?? "";
+                rosettaPerson.ProvisioningStatus_Employee = jeProvisioningStatusEmployee.GetString() ?? "";
             }
             
         }//End of Provisioning Status

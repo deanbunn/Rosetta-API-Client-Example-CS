@@ -10,7 +10,7 @@ for(int i = 0; i < 1;i++)
 {
 
     //Query People by Login ID
-    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.SearchBy.department,"024070");
+    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.SearchBy.loginid,"dbunn");
 
     foreach(RosettaPerson rosettaPrsn in lRosettaPeople)
     {
@@ -19,8 +19,10 @@ for(int i = 0; i < 1;i++)
         //Show Display Name of Person
         Console.WriteLine(rosettaPrsn.DisplayName);
         Console.WriteLine(rosettaPrsn.IAM_ID);
-        Console.WriteLine(rosettaPrsn.Provisioning_Status_Primary);
-        Console.WriteLine(rosettaPrsn.Provisioning_Status_Employee);
+        Console.WriteLine(rosettaPrsn.ProvisioningStatus_Primary);
+        Console.WriteLine(rosettaPrsn.ProvisioningStatus_Employee);
+        Console.WriteLine(rosettaPrsn.ProvisioningStatus_Faculty);
+        Console.WriteLine(rosettaPrsn.ProvisioningStatus_Student);
         Console.WriteLine(rosettaPrsn.Affiliation_Employee.ToString());
         
         Console.WriteLine(" ");
