@@ -1,6 +1,3 @@
-
-using System.ComponentModel;
-
 namespace UCDRosettaAPI;
 
 public class RosettaPerson
@@ -39,6 +36,7 @@ public class RosettaPerson
     public bool Employment_Is_Campus_Employee {get;set;}
     public bool Employment_Is_Health_Employee {get;set;}
   
+    public List<RosettaEmployeeAssociation> lEmployeeAssociations {get;set;}
     
     public RosettaPerson()
     {
@@ -74,6 +72,7 @@ public class RosettaPerson
         Employment_Is_Manager = false;
         Employment_Is_Campus_Employee = false;
         Employment_Is_Health_Employee = false;
+        lEmployeeAssociations = new List<RosettaEmployeeAssociation>();
 
     }
     
