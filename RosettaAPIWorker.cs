@@ -116,6 +116,200 @@ public class RosettaAPIWorker
 
     }
 
+    public RosettaEmployeeAssociation ParseRosettaEmployeeAssocJson(JsonElement jeEmploymentAssoc)
+    {
+        //Initialize Employee Association to Return
+        RosettaEmployeeAssociation rosettaEmplAssoc = new();
+
+        //Retrieve Employee Record
+        if(jeEmploymentAssoc.TryGetProperty("employee_record",out JsonElement jeEmployeeRecord))
+        {
+            rosettaEmplAssoc.Employee_Record = jeEmployeeRecord.GetString() ?? "";
+        }
+
+        //Retrieve Employee ID
+        if(jeEmploymentAssoc.TryGetProperty("employee_id",out JsonElement jeEmployeeID))
+        {
+            rosettaEmplAssoc.Employee_ID = jeEmployeeID.GetString() ?? "";
+        }
+
+        //Retrieve Position Number
+        if(jeEmploymentAssoc.TryGetProperty("position_number",out JsonElement jePositionNumber))
+        {
+            rosettaEmplAssoc.Position_Number = jePositionNumber.GetString() ?? "";
+        }
+
+        //Retrieve Position Title
+        if(jeEmploymentAssoc.TryGetProperty("position_title",out JsonElement jePositionTitle))
+        {
+            rosettaEmplAssoc.Position_Title = jePositionTitle.GetString() ?? "";
+        }
+
+        //Retrieve Relationship to Organization
+        if(jeEmploymentAssoc.TryGetProperty("relationship_to_organization",out JsonElement jeRelationToOrg))
+        {
+            rosettaEmplAssoc.Relationship_To_Organization = jeRelationToOrg.GetString() ?? "";
+        }
+
+        //Retrieve Employee Classification
+        if(jeEmploymentAssoc.TryGetProperty("employee_classification",out JsonElement jeEmplClassifction))
+        {
+            rosettaEmplAssoc.Employee_Classification = jeEmplClassifction.GetString() ?? "";
+        }
+
+        //Retrieve Employee Classification Description
+        if(jeEmploymentAssoc.TryGetProperty("employee_classification_description",out JsonElement jeEmplClassifctionDescp))
+        {
+            rosettaEmplAssoc.Employee_Classification_Description = jeEmplClassifctionDescp.GetString() ?? "";
+        }
+
+        //Retrieve Status
+        if(jeEmploymentAssoc.TryGetProperty("status",out JsonElement jeStatus))
+        {
+            rosettaEmplAssoc.Status = jeStatus.GetString() ?? "";
+        }
+
+        //Retrieve Hire Date
+        if(jeEmploymentAssoc.TryGetProperty("hire_date",out JsonElement jeHireDate))
+        {
+            rosettaEmplAssoc.Hire_Date = jeHireDate.GetString() ?? "";
+        }
+
+        //Retrieve Start Date
+        if(jeEmploymentAssoc.TryGetProperty("start_date",out JsonElement jeStartDate))
+        {
+            rosettaEmplAssoc.Start_Date = jeStartDate.GetString() ?? "";
+        }
+
+        //Retrieve FTE Percentage
+        if(jeEmploymentAssoc.TryGetProperty("fte_percentage",out JsonElement jeFTEPercentage))
+        {
+            rosettaEmplAssoc.FTE_Percentage = jeFTEPercentage.GetString() ?? "";
+        }
+
+        //Retrieve Joy Type ID
+        if(jeEmploymentAssoc.TryGetProperty("job_type_id",out JsonElement jeJobTypeID))
+        {
+            rosettaEmplAssoc.Job_Type_ID = jeJobTypeID.GetString() ?? "";
+        }
+
+        //Retrieve Job Type Description
+        if(jeEmploymentAssoc.TryGetProperty("job_type_description",out JsonElement jeJobTypeDesc))
+        {
+            rosettaEmplAssoc.Job_Type_Description = jeJobTypeDesc.GetString() ?? "";
+        }
+
+        //Retrieve Organization ID
+        if(jeEmploymentAssoc.TryGetProperty("organization_id",out JsonElement jeOrganizationID))
+        {
+            rosettaEmplAssoc.Organization_ID = jeOrganizationID.GetString() ?? "";
+        }
+
+        //Retrieve Organization Title
+        if(jeEmploymentAssoc.TryGetProperty("organization_title",out JsonElement jeOrgTitle))
+        {
+            rosettaEmplAssoc.Organization_Title = jeOrgTitle.GetString() ?? "";
+        }
+
+        //Retrieve Division ID
+        if(jeEmploymentAssoc.TryGetProperty("division_id",out JsonElement jeDivisionID))
+        {
+            rosettaEmplAssoc.Division_ID = jeDivisionID.GetString() ?? "";
+        }
+
+        //Retrieve Division Title
+        if(jeEmploymentAssoc.TryGetProperty("division_title",out JsonElement jeDivisionTitle))
+        {
+            rosettaEmplAssoc.Division_Title = jeDivisionTitle.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision ID
+        if(jeEmploymentAssoc.TryGetProperty("subdivision_id",out JsonElement jeSubDivID))
+        {
+            rosettaEmplAssoc.Subdivision_ID = jeSubDivID.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision Title
+        if(jeEmploymentAssoc.TryGetProperty("subdivision_title",out JsonElement jeSudDivTitle))
+        {
+            rosettaEmplAssoc.Subdivision_Title = jeSudDivTitle.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision L4 ID
+        if(jeEmploymentAssoc.TryGetProperty("subdivision_l4_id",out JsonElement jeSubDivL4ID))
+        {
+            rosettaEmplAssoc.Subdivision_L4_ID = jeSubDivL4ID.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision L4 Title
+        if(jeEmploymentAssoc.TryGetProperty("subdivision_l4_title",out JsonElement jeSubDivL4Title))
+        {
+            rosettaEmplAssoc.Subdivision_L4_Title = jeSubDivL4Title.GetString() ?? "";
+        }
+
+        //Retrieve Business Unit ID
+        if(jeEmploymentAssoc.TryGetProperty("business_unit_id",out JsonElement jeBusinessUnitID))
+        {
+            rosettaEmplAssoc.Business_Unit_ID = jeBusinessUnitID.GetString() ?? "";
+        }
+
+        //Retrieve Business Unit Title
+        if(jeEmploymentAssoc.TryGetProperty("business_unit_title",out JsonElement jeBusinessUnitTitle))
+        {
+            rosettaEmplAssoc.Business_Unit_Title = jeBusinessUnitTitle.GetString() ?? "";
+        }
+
+        //Retrieve Department ID
+        if(jeEmploymentAssoc.TryGetProperty("department_id",out JsonElement jeDepartmentID))
+        {
+            rosettaEmplAssoc.Department_ID = jeDepartmentID.GetString() ?? "";
+        }
+
+        //Retrieve Department Title
+        if(jeEmploymentAssoc.TryGetProperty("department_title",out JsonElement jeDepartmentTitle))
+        {
+            rosettaEmplAssoc.Department_Title = jeDepartmentTitle.GetString() ?? "";
+        }
+
+        //Retrieve Department Short Title
+        if(jeEmploymentAssoc.TryGetProperty("department_short_title",out JsonElement jeDepartmentShortTitle))
+        {
+            rosettaEmplAssoc.Department_Short_Title = jeDepartmentShortTitle.GetString() ?? "";
+        }
+
+        //Retrieve Reports to Position
+        if(jeEmploymentAssoc.TryGetProperty("reports_to_position",out JsonElement jeReportsToPosition))
+        {
+            rosettaEmplAssoc.Reports_To_Position = jeReportsToPosition.GetString() ?? "";
+        }
+
+        //Retrieve Reports To IAM ID
+        if(jeEmploymentAssoc.TryGetProperty("reports_to_iam_id",out JsonElement jeReportsToIAMID))
+        {
+            rosettaEmplAssoc.Reports_To_IAM_ID = jeReportsToIAMID.GetString() ?? "";
+        }
+
+        //Retrieve Reports to Employee ID
+        if(jeEmploymentAssoc.TryGetProperty("reports_to_employee_id",out JsonElement jeReportsToEmpID))
+        {
+            rosettaEmplAssoc.Reports_To_Employee_ID = jeReportsToEmpID.GetString() ?? "";
+        }
+
+        //Retrieve Is Health Position
+        if(jeEmploymentAssoc.TryGetProperty("is_health_position",out JsonElement jeIsHealthPos))
+        {
+            rosettaEmplAssoc.Is_Health_Position = jeIsHealthPos.GetString() ?? "";
+        }
+
+        //Retrieve Is Campus Position
+        if(jeEmploymentAssoc.TryGetProperty("is_campus_position",out JsonElement jeIsCampusPos))
+        {
+            rosettaEmplAssoc.Is_Campus_Position = jeIsCampusPos.GetString() ?? "";
+        }
+
+        return rosettaEmplAssoc;
+    }
+
     public RosettaPerson ParseRosettaPersonJson(JsonElement jePeople)
     {
 
@@ -349,6 +543,16 @@ public class RosettaAPIWorker
             }//End of Employment Status Enumerate Array
 
         }//End of Employment Statuses
+
+        //Check for Employment Associations
+        if(jePeople.TryGetProperty("employee_association",out JsonElement jeEmploymentAssociations))
+        {
+            //Loop Through Each Employment Association
+            foreach(JsonElement jeEmplAssociation in jeEmploymentAssociations.EnumerateArray())
+            {
+                rosettaPerson.lEmployeeAssociations.Add(ParseRosettaEmployeeAssocJson(jeEmplAssociation));
+            }
+        }
 
         return rosettaPerson;
     }

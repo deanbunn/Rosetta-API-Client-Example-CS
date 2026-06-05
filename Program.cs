@@ -22,8 +22,35 @@ for(int i = 0; i < 1;i++)
         //Loop Through Rosetta Person Class and Display Each Property Value
         foreach (PropertyInfo property in rosettaPrsn.GetType().GetProperties())
         {
-            Console.WriteLine($"{property.Name}: {property.GetValue(rosettaPrsn)}");
+            if(property.Name != "lEmployeeAssociations" && property.Name != "lStudentAssociations")
+            {
+                Console.WriteLine($"{property.Name}: {property.GetValue(rosettaPrsn)}");
+            }
+            
         }
+
+        //For Readability
+        Console.WriteLine(" ");
+        
+        if(rosettaPrsn.lEmployeeAssociations.Count > 0)
+        {
+            Console.WriteLine("Employee Associations:");
+            Console.WriteLine(" ");
+
+            foreach(RosettaEmployeeAssociation rea in rosettaPrsn.lEmployeeAssociations)
+            {
+                foreach(PropertyInfo reaProp in rea.GetType().GetProperties())
+                {
+                    Console.WriteLine($"{reaProp.Name}: {reaProp.GetValue(rea)}");
+                }
+
+                Console.WriteLine(" ");
+            }
+        }
+        
+
+
+        //Console.WriteLine("Student Associations Count: ");
 
         //For Readability
         Console.WriteLine(" ");
