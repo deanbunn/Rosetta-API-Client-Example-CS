@@ -2,6 +2,7 @@ namespace UCDRosettaAPI;
 
 public class RosettaEmployeeAssociation
 {
+    public string? IAM_ID {get;set;}
     public string? Employee_Record {get;set;}
     public string? Employee_ID {get;set;}
     public string? Position_Number {get;set;}

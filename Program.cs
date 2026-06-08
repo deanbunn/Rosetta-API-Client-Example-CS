@@ -11,7 +11,7 @@ for(int i = 0; i < 1;i++)
 {
 
     //Query People by Login ID
-    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.SearchBy.loginid,"lmarcu");
+    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.SearchBy.loginid,"dbunn");
 
     //Loop Through Returned Rosetta People Listing
     foreach(RosettaPerson rosettaPrsn in lRosettaPeople)
@@ -32,6 +32,7 @@ for(int i = 0; i < 1;i++)
         //For Readability
         Console.WriteLine(" ");
         
+        //Display Employee Associations
         if(rosettaPrsn.lEmployeeAssociations.Count > 0)
         {
             Console.WriteLine("Employee Associations:");
@@ -46,11 +47,26 @@ for(int i = 0; i < 1;i++)
 
                 Console.WriteLine(" ");
             }
-        }
+
+        }//End of Employee Associations
         
+        //Display Student Associations
+        if(rosettaPrsn.lStudentAssociations.Count > 0)
+        {
+            Console.WriteLine("Student Associations:");
+            Console.WriteLine(" ");
 
+            foreach(RosettaStudentAssociationShort rsa in rosettaPrsn.lStudentAssociations)
+            {
+                foreach(PropertyInfo rsaProp in rsa.GetType().GetProperties())
+                {
+                    Console.WriteLine($"{rsaProp.Name}: {rsaProp.GetValue(rsa)}");
+                }
 
-        //Console.WriteLine("Student Associations Count: ");
+                Console.WriteLine(" ");
+            }
+
+        }//End of Student Associations
 
         //For Readability
         Console.WriteLine(" ");

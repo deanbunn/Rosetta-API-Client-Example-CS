@@ -116,10 +116,129 @@ public class RosettaAPIWorker
 
     }
 
+    public RosettaStudentAssociationShort ParseRosettaStudentAssocShortJson(JsonElement jeStudentAssocShrt)
+    {
+        //Initialize Student Association to Return
+        RosettaStudentAssociationShort rosettaStudentAssoc = new();
+
+        //Retrieve College Code
+        if(jeStudentAssocShrt.TryGetProperty("college_code",out JsonElement jeCollegeCode))
+        {
+            rosettaStudentAssoc.College_Code = jeCollegeCode.GetString() ?? "";
+        }
+
+        //Retrieve College Title 
+        if(jeStudentAssocShrt.TryGetProperty("college_title",out JsonElement jeCollegeTitle))
+        {
+            rosettaStudentAssoc.College_Title = jeCollegeTitle.GetString() ?? "";
+        }
+
+        //Retrieve Major Code
+        if(jeStudentAssocShrt.TryGetProperty("major_code",out JsonElement jeMajorCode))
+        {
+            rosettaStudentAssoc.Major_Code = jeMajorCode.GetString() ?? "";
+        }
+
+        //Retrieve Major Title
+        if(jeStudentAssocShrt.TryGetProperty("major_title",out JsonElement jeMajorTitle))
+        {
+            rosettaStudentAssoc.Major_Title = jeMajorTitle.GetString() ?? "";
+        }
+
+        //Retrieve Academic Level
+        if(jeStudentAssocShrt.TryGetProperty("academic_level",out JsonElement jeAcademicLvl))
+        {
+            rosettaStudentAssoc.Academic_Level = jeAcademicLvl.GetString() ?? "";
+        }
+
+        //Retrieve Class Level
+        if(jeStudentAssocShrt.TryGetProperty("class_level",out JsonElement jeClassLvl))
+        {
+            rosettaStudentAssoc.Class_Level = jeClassLvl.GetString() ?? "";
+        }
+
+        return rosettaStudentAssoc;
+    }
+
+    public RosettaStudentAssociation ParseRosettaStudentAssocJson(JsonElement jeStudentAssoc)
+    {
+
+        //Initialize Student Association to Return
+        RosettaStudentAssociation rosettaStudentAssoc = new();
+
+        //Retrieve IAM ID
+        if(jeStudentAssoc.TryGetProperty("iam_id",out JsonElement jeIAMID))
+        {
+            rosettaStudentAssoc.IAM_ID = jeIAMID.GetString() ?? "";
+        }
+
+        //Retrieve Student ID
+        if(jeStudentAssoc.TryGetProperty("student_id",out JsonElement jeStudentID))
+        {
+            rosettaStudentAssoc.Student_ID = jeStudentID.GetString() ?? "";
+        }
+
+        //Retrieve PIDM
+        if(jeStudentAssoc.TryGetProperty("pidm",out JsonElement jePIDM))
+        {
+            rosettaStudentAssoc.PIDM = jePIDM.GetString() ?? "";
+        }
+
+        //Retrieve College Code
+        if(jeStudentAssoc.TryGetProperty("college_code",out JsonElement jeCollegeCode))
+        {
+            rosettaStudentAssoc.College_Code = jeCollegeCode.GetString() ?? "";
+        }
+
+        //Retrieve College Title 
+        if(jeStudentAssoc.TryGetProperty("college_title",out JsonElement jeCollegeTitle))
+        {
+            rosettaStudentAssoc.College_Title = jeCollegeTitle.GetString() ?? "";
+        }
+
+        //Retrieve Major Code
+        if(jeStudentAssoc.TryGetProperty("major_code",out JsonElement jeMajorCode))
+        {
+            rosettaStudentAssoc.Major_Code = jeMajorCode.GetString() ?? "";
+        }
+
+        //Retrieve Major Title
+        if(jeStudentAssoc.TryGetProperty("major_title",out JsonElement jeMajorTitle))
+        {
+            rosettaStudentAssoc.Major_Title = jeMajorTitle.GetString() ?? "";
+        }
+
+        //Retrieve Level Affiliation Code
+        if(jeStudentAssoc.TryGetProperty("lvl_affiliation_code",out JsonElement jeLvlAfflCode))
+        {
+            rosettaStudentAssoc.Level_Affiliation_Code = jeLvlAfflCode.GetString() ?? "";
+        }
+
+        //Retrieve Class Affiliation Code
+        if(jeStudentAssoc.TryGetProperty("cls_affiliation_code",out JsonElement jeClsAfflCode))
+        {
+            rosettaStudentAssoc.Class_Affiliation_Code = jeClsAfflCode.GetString() ?? "";
+        }
+
+        //Retrieve Rank
+        if(jeStudentAssoc.TryGetProperty("rank",out JsonElement jeRank))
+        {
+            rosettaStudentAssoc.Rank = jeRank.GetString() ?? "";
+        }
+
+        return rosettaStudentAssoc;
+    }
+
     public RosettaEmployeeAssociation ParseRosettaEmployeeAssocJson(JsonElement jeEmploymentAssoc)
     {
         //Initialize Employee Association to Return
         RosettaEmployeeAssociation rosettaEmplAssoc = new();
+
+        //Retrieve IAM ID
+        if(jeEmploymentAssoc.TryGetProperty("iam_id",out JsonElement jeIAMID))
+        {
+            rosettaEmplAssoc.IAM_ID = jeIAMID.GetString() ?? "";
+        }
 
         //Retrieve Employee Record
         if(jeEmploymentAssoc.TryGetProperty("employee_record",out JsonElement jeEmployeeRecord))
@@ -552,6 +671,17 @@ public class RosettaAPIWorker
             {
                 rosettaPerson.lEmployeeAssociations.Add(ParseRosettaEmployeeAssocJson(jeEmplAssociation));
             }
+        }
+
+        //Check for Student Associations
+        if(jePeople.TryGetProperty("student_association",out JsonElement jeStudentAssociations))
+        {
+            //Loop Through Each Student Association
+            foreach(JsonElement jeStdtAssociation in jeStudentAssociations.EnumerateArray())
+            {
+                rosettaPerson.lStudentAssociations.Add(ParseRosettaStudentAssocShortJson(jeStdtAssociation));
+            }
+
         }
 
         return rosettaPerson;

@@ -37,6 +37,7 @@ public class RosettaPerson
     public bool Employment_Is_Health_Employee {get;set;}
   
     public List<RosettaEmployeeAssociation> lEmployeeAssociations {get;set;}
+    public List<RosettaStudentAssociationShort> lStudentAssociations {get;set;}
     
     public RosettaPerson()
     {
@@ -73,6 +74,7 @@ public class RosettaPerson
         Employment_Is_Campus_Employee = false;
         Employment_Is_Health_Employee = false;
         lEmployeeAssociations = new List<RosettaEmployeeAssociation>();
+        lStudentAssociations = new List<RosettaStudentAssociationShort>();
 
     }
     
