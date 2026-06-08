@@ -798,4 +798,137 @@ public class RosettaAPIWorker
         return lRosettaPeople;
     }
 
+    public RosettaDepartment ParseRosettaDepartmentJson(JsonElement jeDept)
+    {
+        //Intialize Rosetta Department to Return
+        RosettaDepartment rosettaDept = new();
+
+        //Retrieve Department ID
+        if(jeDept.TryGetProperty("department_id",out JsonElement jeDepartmentID))
+        {
+            rosettaDept.Department_ID = jeDepartmentID.GetString() ?? "";
+        }
+
+        //Retrieve Department Title
+        if(jeDept.TryGetProperty("department_title",out JsonElement jeDepartmentTitle))
+        {
+            rosettaDept.Department_Title = jeDepartmentTitle.GetString() ?? "";
+        }
+
+        //Retrieve Department Short Title
+        if(jeDept.TryGetProperty("department_short_title",out JsonElement jeDepartmentShortTitle))
+        {
+            rosettaDept.Department_Short_Title = jeDepartmentShortTitle.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision ID
+        if(jeDept.TryGetProperty("subdivision_id",out JsonElement jeSubdivID))
+        {
+            rosettaDept.Subdivision_ID = jeSubdivID.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision Title
+        if(jeDept.TryGetProperty("subdivision_title",out JsonElement jeSubdivTitle))
+        {
+            rosettaDept.Subdivision_Title = jeSubdivTitle.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision L4 ID
+        if(jeDept.TryGetProperty("subdivision_l4_id",out JsonElement jeSubdivL4ID))
+        {
+            rosettaDept.Subdivision_L4_ID = jeSubdivL4ID.GetString() ?? "";
+        }
+
+        //Retrieve Subdivision L4 Title
+        if(jeDept.TryGetProperty("subdivision_l4_title",out JsonElement jeSubdivL4Title))
+        {
+            rosettaDept.Subdivision_L4_Title = jeSubdivL4Title.GetString() ?? "";
+        }
+
+        //Retrieve Division ID
+        if(jeDept.TryGetProperty("division_id",out JsonElement jeDivisionID))
+        {
+            rosettaDept.Division_ID = jeDivisionID.GetString() ?? "";
+        }
+
+        //Retrieve Division Title
+        if(jeDept.TryGetProperty("division_title",out JsonElement jeDivisionTitle))
+        {
+            rosettaDept.Division_Title = jeDivisionTitle.GetString() ?? "";
+        }
+
+        //Retrieve Organization ID
+        if(jeDept.TryGetProperty("organization_id",out JsonElement jeOrgID))
+        {
+            rosettaDept.Organization_ID = jeOrgID.GetString() ?? "";
+        }
+
+        //Retrieve Organization Title
+        if(jeDept.TryGetProperty("organization_title",out JsonElement jeOrgTitle))
+        {
+            rosettaDept.Organization_Title = jeOrgTitle.GetString() ?? "";
+        }
+
+        return rosettaDept;
+    }
+
+    public List<RosettaDepartment> GetRosettaDepartments()
+    {
+        
+        //Initialize List to Return
+        List<RosettaDepartment> lDepartments = new();
+
+        //Var for Result Limit
+        int nRsltLimit = 2000;
+
+        //Check OAuth Token
+        if(CheckOAuthToken() == true)
+        {
+            //Initiate Http Client to Get Department Information
+            using(var client = new HttpClient())
+            {
+                //Var for Bearer Token
+                string bearerToken = "Bearer " + _OAuth_Token;
+
+                //Add Required Header Values
+                client.DefaultRequestHeaders.Add("Authorization",bearerToken);
+
+                //Var for Departments Url
+                string departmentsURL = Base_Url + "employee-association/departments?" + "limit=" + nRsltLimit.ToString();
+
+                //Get to Employee Association Departments Endpoint
+                HttpResponseMessage response = client.GetAsync(departmentsURL).Result;
+
+                //Check Response Status Code
+                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    //Read Response Body
+                    string responsebody = response.Content.ReadAsStringAsync().Result;
+
+                    //Parse the Response Body
+                    using(JsonDocument jdDepartments = JsonDocument.Parse(responsebody))
+                    {
+
+                        //Access the Array at the Root
+                        JsonElement root = jdDepartments.RootElement;
+
+                        //Iterate Through the Array
+                        foreach(JsonElement element in root.EnumerateArray())
+                        {
+                            //Add Rosetta Department to Returned Departments List
+                            lDepartments.Add(ParseRosettaDepartmentJson(element));
+
+                        }//End of Root Enumerate Array
+
+                    }//End Parse Response Body
+
+                }//End of Status Code Check
+
+            }
+
+        }//End of Check OAuth Token
+
+        return lDepartments;
+    }
+
 }

@@ -6,6 +6,7 @@ using UCDRosettaAPI;
 //Initiate Rosetta API Worker
 RosettaAPIWorker rosettaAPIWrkr = new();
 
+
 //Testing Loop 
 for(int i = 0; i < 1;i++)
 {
@@ -84,7 +85,27 @@ for(int i = 0; i < 1;i++)
 
 }
 
+//###############################
+// Show Rosetta Departments
+//###############################
+// List<RosettaDepartment> lRosettaDepartments = rosettaAPIWrkr.GetRosettaDepartments();
 
+// foreach(RosettaDepartment rosettaDept in lRosettaDepartments)
+// {
+//     //For Readability
+//     Console.WriteLine(" ");
+
+//     //Loop Through Rosetta Department Class and Display Each Property Value
+//     foreach(PropertyInfo deptProp in rosettaDept.GetType().GetProperties())
+//     {
+//         Console.WriteLine($"{deptProp.Name}: {deptProp.GetValue(rosettaDept)}");
+//     }
+
+//     //For Readability
+//     Console.WriteLine(" ");
+// }
+
+// Console.WriteLine("Departments Count: " + lRosettaDepartments.Count.ToString());
 
 
 
