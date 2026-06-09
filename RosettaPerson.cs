@@ -13,10 +13,10 @@ public class RosettaPerson
     public string Lived_First_Name {get;set;}
     public string Lived_Last_Name {get;set;}
     public string? DisplayName {get;set;}
-    public string ProvisioningStatus_Primary {get;set;}
-    public string ProvisioningStatus_Employee {get;set;}
-    public string ProvisioningStatus_Faculty {get;set;}
-    public string ProvisioningStatus_Student {get;set;}
+    public string Provisioning_Status_Primary {get;set;}
+    public string Provisioning_Status_Employee {get;set;}
+    public string Provisioning_Status_Faculty {get;set;}
+    public string Provisioning_Status_Student {get;set;}
     public bool Affiliation_Employee {get;set;}
     public bool Affiliation_Faculty {get;set;}
     public bool Affiliation_Temporary_Affiliate {get;set;}
@@ -51,10 +51,10 @@ public class RosettaPerson
         Email_Address_Health = string.Empty;
         Lived_First_Name = string.Empty;
         Lived_Last_Name = string.Empty;
-        ProvisioningStatus_Employee = string.Empty;
-        ProvisioningStatus_Faculty = string.Empty;
-        ProvisioningStatus_Primary = string.Empty;
-        ProvisioningStatus_Student = string.Empty;
+        Provisioning_Status_Employee = string.Empty;
+        Provisioning_Status_Faculty = string.Empty;
+        Provisioning_Status_Primary = string.Empty;
+        Provisioning_Status_Student = string.Empty;
         Affiliation_Employee = false;
         Affiliation_Faculty = false;
         Affiliation_Temporary_Affiliate = false;

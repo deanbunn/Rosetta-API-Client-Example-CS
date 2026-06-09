@@ -32,7 +32,7 @@ public class RosettaAPIWorker
 
     }
 
-    public enum SearchBy
+    public enum PeopleSearchBy
     {
         iamid,
         loginid,
@@ -536,25 +536,25 @@ public class RosettaAPIWorker
             //Retrieve Primary Provisioning Status
             if(jeProvisioningStatus.TryGetProperty("primary",out JsonElement jeProvisioningStatusPrimary))
             {
-                rosettaPerson.ProvisioningStatus_Primary = jeProvisioningStatusPrimary.GetString() ?? "";
+                rosettaPerson.Provisioning_Status_Primary = jeProvisioningStatusPrimary.GetString() ?? "";
             }
             
             //Retrieve Employee Provisioning Status
             if(jeProvisioningStatus.TryGetProperty("employee",out JsonElement jeProvisioningStatusEmployee))
             {
-                rosettaPerson.ProvisioningStatus_Employee = jeProvisioningStatusEmployee.GetString() ?? "";
+                rosettaPerson.Provisioning_Status_Employee = jeProvisioningStatusEmployee.GetString() ?? "";
             }
 
             //Retrieve Faculty Provisioning Status
             if(jeProvisioningStatus.TryGetProperty("faculty",out JsonElement jeProvisioningStatusFaculty))
             {
-                rosettaPerson.ProvisioningStatus_Faculty = jeProvisioningStatusFaculty.GetString() ?? "";
+                rosettaPerson.Provisioning_Status_Faculty = jeProvisioningStatusFaculty.GetString() ?? "";
             }
 
             //Retrieve Student Provisioning Status
             if(jeProvisioningStatus.TryGetProperty("student",out JsonElement jeProvisioningStatusStudent))
             {
-                rosettaPerson.ProvisioningStatus_Student = jeProvisioningStatusStudent.GetString() ?? "";
+                rosettaPerson.Provisioning_Status_Student = jeProvisioningStatusStudent.GetString() ?? "";
             }
             
         }//End of Provisioning Status
@@ -671,7 +671,17 @@ public class RosettaAPIWorker
             {
                 rosettaPerson.lEmployeeAssociations.Add(ParseRosettaEmployeeAssocJson(jeEmplAssociation));
             }
-        }
+
+            //Update Employee Associations with IAM ID
+            if(string.IsNullOrEmpty(rosettaPerson.IAM_ID) == false && rosettaPerson.lEmployeeAssociations.Count > 0)
+            {
+                foreach(RosettaEmployeeAssociation rea in rosettaPerson.lEmployeeAssociations)
+                {
+                    rea.IAM_ID = rosettaPerson.IAM_ID;
+                }
+            }
+
+        }//End of Employment Associations
 
         //Check for Student Associations
         if(jePeople.TryGetProperty("student_association",out JsonElement jeStudentAssociations))
@@ -682,12 +692,12 @@ public class RosettaAPIWorker
                 rosettaPerson.lStudentAssociations.Add(ParseRosettaStudentAssocShortJson(jeStdtAssociation));
             }
 
-        }
+        }//End of Student Associations
 
         return rosettaPerson;
     }
 
-    public List<RosettaPerson> GetPeopleBySearchTerm(SearchBy searchBy, string searchTerm)
+    public List<RosettaPerson> GetPeopleBySearchTerm(PeopleSearchBy searchBy, string searchTerm)
     {
         //Var for Return List
         List<RosettaPerson> lRosettaPeople = new();
