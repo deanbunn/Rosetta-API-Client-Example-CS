@@ -43,6 +43,15 @@ public class RosettaAPIWorker
         department
     }
 
+    public enum EmployeeSearchBy
+    {
+        departmentid,
+        divisionid,
+        subdivisionid,
+        subdivisionl4id,
+        organizationid
+    }
+
     public bool CheckOAuthToken()
     {
         //Var for Return Value
@@ -808,6 +817,15 @@ public class RosettaAPIWorker
         return lRosettaPeople;
     }
 
+    public List<RosettaEmployeeAssociation> GetEmployeeAssociationsBySearchTerm(EmployeeSearchBy searchBy, string searchTerm)
+    {
+        //Var for List to Return
+        List<RosettaEmployeeAssociation> lEmployeeAssociations = new();
+
+        
+
+        return lEmployeeAssociations;
+    }
     public RosettaDepartment ParseRosettaDepartmentJson(JsonElement jeDept)
     {
         //Intialize Rosetta Department to Return
