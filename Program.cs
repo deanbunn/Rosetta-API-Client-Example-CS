@@ -9,8 +9,24 @@ if(args.Length > 0 && string.IsNullOrEmpty(args[0]) == false)
     
     switch(args[0].ToLower())
     {
-        case "people":
-            PeopleSearching(args[1]);
+        case "people-login":
+            PeopleSearching(RosettaAPIWorker.PeopleSearchBy.loginid,args[1]);
+            break;
+
+        case "people-iam":
+            PeopleSearching(RosettaAPIWorker.PeopleSearchBy.iamid,args[1]);
+            break;
+
+        case "people-employee":
+            PeopleSearching(RosettaAPIWorker.PeopleSearchBy.employeeid,args[1]);
+            break;
+
+        case "people-student":
+            PeopleSearching(RosettaAPIWorker.PeopleSearchBy.studentid,args[1]);
+            break;
+
+        case "people-department":
+            PeopleSearching(RosettaAPIWorker.PeopleSearchBy.department,args[1]);
             break;
 
         case "employee":
@@ -29,20 +45,21 @@ if(args.Length > 0 && string.IsNullOrEmpty(args[0]) == false)
 // People Searching
 //###############################
 
-static void PeopleSearching(string searchTerm)
+static void PeopleSearching(RosettaAPIWorker.PeopleSearchBy peopleSearchBy,string searchTerm)
 {
 
     //Initiate Rosetta API Worker
     RosettaAPIWorker rosettaAPIWrkr = new();
 
     //Query People by Login ID
-    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(RosettaAPIWorker.PeopleSearchBy.loginid,searchTerm.Trim());
+    List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(peopleSearchBy,searchTerm.Trim());
 
     //Loop Through Returned Rosetta People Listing
     foreach(RosettaPerson rosettaPrsn in lRosettaPeople)
     {
-
         //For Readability
+        Console.WriteLine(" ");
+        Console.WriteLine("=========== " + rosettaPrsn.DisplayName + " =============");
         Console.WriteLine(" ");
 
         //Loop Through Rosetta Person Class and Display Each Property Value
@@ -94,9 +111,7 @@ static void PeopleSearching(string searchTerm)
 
         }//End of Student Associations
 
-        //For Readability
-        Console.WriteLine(" ");
-
+        
     }//End of lRosettaPeople Listing
 }
 
