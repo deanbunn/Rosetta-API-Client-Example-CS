@@ -9,6 +9,7 @@ if(args.Length > 0 && string.IsNullOrEmpty(args[0]) == false)
     
     switch(args[0].ToLower())
     {
+
         case "people-login":
             PeopleSearching(RosettaAPIWorker.PeopleSearchBy.loginid,args[1]);
             break;
@@ -29,15 +30,39 @@ if(args.Length > 0 && string.IsNullOrEmpty(args[0]) == false)
             PeopleSearching(RosettaAPIWorker.PeopleSearchBy.department,args[1]);
             break;
 
-        case "employee":
-            EmployeeSearching(args[1]);
+        case "employee-iam":
+            EmployeeSearching(RosettaAPIWorker.EmployeeSearchBy.iamid,args[1]);
             break;
 
-        case "department":
+        case "employee-department":
+            EmployeeSearching(RosettaAPIWorker.EmployeeSearchBy.departmentid,args[1]);
+            break;
+
+        case "employee-division":
+            EmployeeSearching(RosettaAPIWorker.EmployeeSearchBy.divisionid,args[1]);
+            break;
+
+        case "employee-organization":
+            EmployeeSearching(RosettaAPIWorker.EmployeeSearchBy.organizationid,args[1]);
+            break;
+
+        case "employee-subdivision":
+            EmployeeSearching(RosettaAPIWorker.EmployeeSearchBy.subdivisionid,args[1]);
+            break;
+
+        case "employee-subdivisionl4":
+            EmployeeSearching(RosettaAPIWorker.EmployeeSearchBy.subdivisionl4id,args[1]);
+            break;
+
+        case "departments":
             ShowDepartments();
             break;
 
     }
+}
+else
+{
+    ShowArgumentOptions();
 }
 
 
@@ -51,7 +76,7 @@ static void PeopleSearching(RosettaAPIWorker.PeopleSearchBy peopleSearchBy,strin
     //Initiate Rosetta API Worker
     RosettaAPIWorker rosettaAPIWrkr = new();
 
-    //Query People by Login ID
+    //Query People by Search Parameters
     List<RosettaPerson> lRosettaPeople = rosettaAPIWrkr.GetPeopleBySearchTerm(peopleSearchBy,searchTerm.Trim());
 
     //Loop Through Returned Rosetta People Listing
@@ -120,9 +145,34 @@ static void PeopleSearching(RosettaAPIWorker.PeopleSearchBy peopleSearchBy,strin
 // Employee-Associations
 //###############################
 
-static void EmployeeSearching(string searchTerm)
+static void EmployeeSearching(RosettaAPIWorker.EmployeeSearchBy employeeSearchBy,string searchTerm)
 {
-    Console.WriteLine("More codes");
+
+    //Initiate Rosetta API Worker
+    RosettaAPIWorker rosettaAPIWrkr = new();
+
+    //Query Employee Associations by Search Parameters
+    List<RosettaEmployeeAssociation> lRosettaEmplAssocs = rosettaAPIWrkr.GetEmployeeAssociationsBySearchTerm(employeeSearchBy,searchTerm.Trim());
+
+    //Loop Through Returned Rosetta Employee Associations
+    foreach(RosettaEmployeeAssociation rosettaEmplAssoc in lRosettaEmplAssocs)
+    {
+
+        //For Readability
+        Console.WriteLine(" ");
+
+        //Loop Through Rosetta Employee Association Class and Display Each Property Value
+        foreach(PropertyInfo reaProp in rosettaEmplAssoc.GetType().GetProperties())
+        {
+            Console.WriteLine($"{reaProp.Name}: {reaProp.GetValue(rosettaEmplAssoc)}");
+        }
+
+        //For Readability
+        Console.WriteLine(" ");
+    }
+
+    Console.WriteLine("Employee Associations Count: " + lRosettaEmplAssocs.Count.ToString());
+
 }
 
 
@@ -154,6 +204,30 @@ static void ShowDepartments()
 
     Console.WriteLine("Departments Count: " + lRosettaDepartments.Count.ToString());
 
+}
+
+//###############################
+// Display Agrument Options
+//###############################
+static void ShowArgumentOptions()
+{
+    Console.WriteLine(" ");
+    Console.WriteLine("Argument Options:");
+    Console.WriteLine("=======================");
+    Console.WriteLine("people-login <userid>");
+    Console.WriteLine("people-iam <iamid>");
+    Console.WriteLine("people-employee <employeeid>");
+    Console.WriteLine("people-student <studentid>");
+    Console.WriteLine("people-department <departmentcode>");
+    Console.WriteLine("employee-iam <iamid>");
+    Console.WriteLine("employee-department <departmentcode>");
+    Console.WriteLine("employee-division <divisionid>");
+    Console.WriteLine("employee-organization <organizationid>");
+    Console.WriteLine("employee-subdivision <subdivisionid>");
+    Console.WriteLine("employee-subdivisionl4 <subdivisionl4id>");
+    Console.WriteLine("departments");
+    Console.WriteLine(" ");
+    Console.WriteLine(" ");
 }
 
 

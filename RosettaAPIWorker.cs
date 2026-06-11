@@ -45,6 +45,7 @@ public class RosettaAPIWorker
 
     public enum EmployeeSearchBy
     {
+        iamid,
         departmentid,
         divisionid,
         subdivisionid,
@@ -822,7 +823,108 @@ public class RosettaAPIWorker
         //Var for List to Return
         List<RosettaEmployeeAssociation> lEmployeeAssociations = new();
 
-        
+        //Var for Search Result Limit
+        int nSrchRsltLimit = 100;
+
+        //Var for Search Result Offset
+        int nSrchRsltOffset = 0;
+
+        //Var for Retrieve More Search Results
+        bool bRetrMoreSrchRslts = true;
+
+        do
+        {
+            //Check OAuth Token
+            if(CheckOAuthToken() == true)
+            {
+
+                //Initiate Http Client to Get Employee Association Information
+                using(var client = new HttpClient())
+                {
+                    //Var for Bearer Token
+                    string bearerToken = "Bearer " + _OAuth_Token;
+
+                    //Add Required Header Values
+                    client.DefaultRequestHeaders.Add("Authorization",bearerToken);
+
+                    //Var for Employee Association Url
+                    string employeeURL = Base_Url + "employee-association?"+ searchBy.ToString() + "=" + searchTerm + "&offset=" + nSrchRsltOffset.ToString() + "&limit=" + nSrchRsltLimit.ToString() + "&count=true";
+
+                    //Get to People Endpoint
+                    HttpResponseMessage response = client.GetAsync(employeeURL).Result;
+
+                    //Check Response Status Code
+                    if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        
+                        //Pull X-Total-Count and x-response-count
+                        if(response.Headers.TryGetValues("x-total-count", out var xtcount) 
+                        && response.Headers.TryGetValues("x-response-count", out var xrpcount)
+                        && int.TryParse(xtcount.First(),out int nTotalCnt) 
+                        && int.TryParse(xrpcount.First(),out int nRspnCnt))
+                        {
+
+                            //Check Total and Response Counts are Not Empty
+                            if(nTotalCnt > 0 && nRspnCnt > 0)
+                            {
+                                //Read Response Body
+                                string responsebody = response.Content.ReadAsStringAsync().Result;
+
+                                //Parse the Response Body
+                                using(JsonDocument jdEmplAssoc = JsonDocument.Parse(responsebody))
+                                {
+
+                                    //Access the Array at the Root
+                                    JsonElement root = jdEmplAssoc.RootElement;
+
+                                    //Iterate Through the Array
+                                    foreach(JsonElement element in root.EnumerateArray())
+                                    {
+
+                                        //Add Rosetta Person to Returned People List
+                                        lEmployeeAssociations.Add(ParseRosettaEmployeeAssocJson(element));
+
+                                    }//End of Root Enumerate Array
+
+                                }//End Parse Response Body
+
+                                //Increment Offset
+                                nSrchRsltOffset += nSrchRsltLimit;
+
+                                //Check Offset to Total Count
+                                if(nSrchRsltOffset >= nTotalCnt)
+                                {
+                                    bRetrMoreSrchRslts = false;
+                                }
+
+                            }
+                            else
+                            {
+                                bRetrMoreSrchRslts = false;
+                            }//End of nTotalCnt and nRspnCnt Empty Checks
+
+                        }
+                        else
+                        {
+                            bRetrMoreSrchRslts = false;
+                        }//End of Return Header Counts Checks
+
+                    }
+                    else
+                    {
+                        bRetrMoreSrchRslts = false;
+                    }//End of Status Code Check
+
+                }//End of HttpClient
+
+            }
+            else
+            {
+                bRetrMoreSrchRslts = false;
+            }//End of CheckOAuthToken
+
+        }
+        while(bRetrMoreSrchRslts == true);
 
         return lEmployeeAssociations;
     }
